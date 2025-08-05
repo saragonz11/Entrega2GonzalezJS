@@ -14,6 +14,22 @@ let categorias = [
   "Otros",
 ];
 
+// Array de meses para reutilizar
+const meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
+
 // Elementos del DOM
 const configForm = document.getElementById("configForm");
 const nombreUsuario = document.getElementById("nombreUsuario");
@@ -46,21 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // Función de inicialización
 function inicializarAplicacion() {
   // Llenar el selector de meses
-  const meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-
   meses.forEach((mes, index) => {
     const option = document.createElement("option");
     option.value = index;
@@ -112,19 +113,19 @@ function iniciarSimulador() {
   }
 
   // Ocultar formulario de configuración
-  configForm.parentElement.parentElement.parentElement.style.display = "none";
+  configForm.parentElement.parentElement.parentElement.classList.add("hidden");
 
   // Mostrar información del usuario
   mostrarInformacionUsuario();
 
   // Mostrar formulario de gastos
-  formGastos.style.display = "block";
+  formGastos.classList.remove("hidden");
 
   // Mostrar paneles de resultados
-  infoUsuario.style.display = "block";
-  resumenGastos.style.display = "block";
-  listaGastos.style.display = "block";
-  graficoCategorias.style.display = "block";
+  infoUsuario.classList.remove("hidden");
+  resumenGastos.classList.remove("hidden");
+  listaGastos.classList.remove("hidden");
+  graficoCategorias.classList.remove("hidden");
 
   // Guardar datos
   guardarDatos();
@@ -220,12 +221,12 @@ function mostrarGastos() {
     }</small>
             </div>
             <div class="d-flex align-items-center">
-                                                                <span class="badge me-2" style="background-color: #2C4A52; color: white;">$${gasto.monto.toFixed(
-                                                                  2
-                                                                )}</span>
-                <button class="btn btn-outline-secondary btn-sm" onclick="eliminarGasto(${
+                <span class="badge me-2 badge-monto">$${gasto.monto.toFixed(
+                  2
+                )}</span>
+                <button class="btn btn-outline-secondary btn-sm btn-eliminar" onclick="eliminarGasto(${
                   gasto.id
-                })" style="border-color: #8E9B97; color: #8E9B97;">
+                })">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -261,8 +262,10 @@ function mostrarCategorias() {
                     <br>
                     <small>$${monto.toFixed(2)} (${porcentaje}%)</small>
                 </div>
-                <div class="progress" style="width: 100px; height: 8px;">
-                    <div class="progress-bar bg-light" style="width: ${porcentaje}%"></div>
+                <div class="progress progress-categoria">
+                    <div class="progress-bar bg-light ${obtenerClaseProgreso(
+                      porcentaje
+                    )}"></div>
                 </div>
             `;
       categoriasContainer.appendChild(categoriaElement);
@@ -300,14 +303,16 @@ function limpiarGastos() {
 // Función para volver a la configuración
 function volverAConfiguracion() {
   // Mostrar formulario de configuración
-  configForm.parentElement.parentElement.parentElement.style.display = "block";
+  configForm.parentElement.parentElement.parentElement.classList.remove(
+    "hidden"
+  );
 
   // Ocultar todos los paneles del simulador
-  formGastos.style.display = "none";
-  infoUsuario.style.display = "none";
-  resumenGastos.style.display = "none";
-  listaGastos.style.display = "none";
-  graficoCategorias.style.display = "none";
+  formGastos.classList.add("hidden");
+  infoUsuario.classList.add("hidden");
+  resumenGastos.classList.add("hidden");
+  listaGastos.classList.add("hidden");
+  graficoCategorias.classList.add("hidden");
 
   // Limpiar gastos al volver
   gastos = [];
@@ -323,21 +328,14 @@ function volverAConfiguracion() {
 
 // Función para obtener nombre del mes
 function obtenerNombreMes(index) {
-  const meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
   return meses[index];
+}
+
+// Función para obtener clase CSS de progreso
+function obtenerClaseProgreso(porcentaje) {
+  // Redondear al múltiplo de 5 más cercano
+  const porcentajeRedondeado = Math.round(porcentaje / 5) * 5;
+  return `progress-width-${porcentajeRedondeado}`;
 }
 
 // Función para mostrar notificaciones
@@ -345,16 +343,17 @@ function mostrarNotificacion(mensaje, tipo) {
   const notificaciones = document.getElementById("notificaciones");
   const toast = document.createElement("div");
 
-  // Mapear tipos a colores de la paleta Grises Difusos
-  const colores = {
-    success: "#537072", // waterway
-    warning: "#8E9B97", // haze
-    info: "#2C4A52", // blue-green
-    error: "#537072", // waterway para errores
+  // Mapear tipos a clases CSS
+  const clasesToast = {
+    success: "toast-success",
+    warning: "toast-warning",
+    info: "toast-info",
+    error: "toast-error",
   };
 
-  toast.className = `toast align-items-center text-white border-0`;
-  toast.style.backgroundColor = colores[tipo] || colores["info"];
+  toast.className = `toast align-items-center text-white border-0 ${
+    clasesToast[tipo] || clasesToast["info"]
+  }`;
   toast.setAttribute("role", "alert");
   toast.setAttribute("aria-live", "assertive");
   toast.setAttribute("aria-atomic", "true");
@@ -403,13 +402,14 @@ function cargarDatosGuardados() {
       nombreUsuario.value = usuario;
       mesSeleccionado.value = mesActual;
 
-      configForm.parentElement.parentElement.parentElement.style.display =
-        "none";
-      formGastos.style.display = "block";
-      infoUsuario.style.display = "block";
-      resumenGastos.style.display = "block";
-      listaGastos.style.display = "block";
-      graficoCategorias.style.display = "block";
+      configForm.parentElement.parentElement.parentElement.classList.add(
+        "hidden"
+      );
+      formGastos.classList.remove("hidden");
+      infoUsuario.classList.remove("hidden");
+      resumenGastos.classList.remove("hidden");
+      listaGastos.classList.remove("hidden");
+      graficoCategorias.classList.remove("hidden");
 
       mostrarInformacionUsuario();
       actualizarResumen();

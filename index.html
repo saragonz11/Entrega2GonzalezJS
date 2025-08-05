@@ -34,7 +34,7 @@
       <div class="row justify-content-center mb-4">
         <div class="col-lg-6 col-md-8 col-sm-10">
           <div class="card">
-            <div class="card-header" style="background-color: #2C4A52; color: white;">
+            <div class="card-header card-header-config">
               <h5 class="mb-0">
                 <i class="fas fa-cog me-2"></i>
                 Configuración Inicial
@@ -59,7 +59,7 @@
                     <option value="">Selecciona un mes</option>
                   </select>
                 </div>
-                <button type="submit" class="btn w-100" style="background-color: #2C4A52; color: white; border-color: #2C4A52;">
+                <button type="submit" class="btn w-100 btn-config">
                   <i class="fas fa-play me-2"></i>
                   Iniciar Simulador
                 </button>
@@ -73,8 +73,8 @@
         <!-- Panel lateral izquierdo -->
         <div class="col-lg-4">
           <!-- Formulario para agregar gastos -->
-          <div class="card" id="formGastos" style="display: none">
-            <div class="card-header" style="background-color: #537072; color: white;">
+          <div class="card hidden" id="formGastos">
+            <div class="card-header card-header-gastos">
               <h5 class="mb-0">
                 <i class="fas fa-plus me-2"></i>
                 Agregar Nuevo Gasto
@@ -90,7 +90,7 @@
                     type="text"
                     class="form-control"
                     id="descripcionGasto"
-                    placeholder="Ej: Almuerzo en restaurante"
+                    placeholder="Ej: Bandeja paisa en el centro"
                     required
                   />
                 </div>
@@ -102,7 +102,7 @@
                     id="montoGasto"
                     step="0.01"
                     min="0.01"
-                    placeholder="25.50"
+                    placeholder="15.000"
                     required
                   />
                 </div>
@@ -114,7 +114,7 @@
                     <option value="">Selecciona una categoría</option>
                   </select>
                 </div>
-                <button type="submit" class="btn w-100" style="background-color: #537072; color: white; border-color: #537072;">
+                <button type="submit" class="btn w-100 btn-gastos">
                   <i class="fas fa-save me-2"></i>
                   Agregar Gasto
                 </button>
@@ -126,7 +126,7 @@
         <!-- Panel principal de resultados -->
         <div class="col-lg-8">
           <!-- Información del usuario -->
-          <div class="card mb-4" id="infoUsuario" style="display: none">
+          <div class="card mb-4 hidden" id="infoUsuario">
             <div class="card-body text-center">
               <div
                 class="d-flex justify-content-between align-items-center mb-3"
@@ -149,8 +149,8 @@
           </div>
 
           <!-- Resumen de gastos -->
-          <div class="card mb-4" id="resumenGastos" style="display: none">
-            <div class="card-header" style="background-color: #8E9B97; color: white;">
+          <div class="card mb-4 hidden" id="resumenGastos">
+            <div class="card-header card-header-resumen">
               <h5 class="mb-0">
                 <i class="fas fa-chart-pie me-2"></i>
                 Resumen de Gastos
@@ -184,12 +184,11 @@
       </div>
 
       <!-- Lista de gastos - Ancho completo -->
-      <div class="row" id="listaGastos" style="display: none">
+      <div class="row hidden" id="listaGastos">
         <div class="col-12">
           <div class="card mb-4">
             <div
-              class="card-header d-flex justify-content-between align-items-center"
-              style="background-color: #537072; color: white;"
+              class="card-header d-flex justify-content-between align-items-center card-header-gastos"
             >
               <h5 class="mb-0">
                 <i class="fas fa-list me-2"></i>
@@ -213,10 +212,10 @@
       </div>
 
       <!-- Gráfico de categorías - Ancho completo -->
-      <div class="row" id="graficoCategorias" style="display: none">
+      <div class="row hidden" id="graficoCategorias">
         <div class="col-12">
           <div class="card">
-            <div class="card-header" style="background-color: #2C4A52; color: white;">
+            <div class="card-header card-header-config">
               <h5 class="mb-0">
                 <i class="fas fa-chart-bar me-2"></i>
                 Gastos por Categoría
@@ -235,8 +234,7 @@
       <!-- Mensajes de notificación -->
       <div
         id="notificaciones"
-        class="position-fixed top-0 end-0 p-3"
-        style="z-index: 1050"
+        class="position-fixed top-0 end-0 p-3 notifications-container"
       >
         <!-- Las notificaciones aparecerán aquí -->
       </div>
